@@ -12,11 +12,11 @@ module.exports = {
             return post
         },
         async fetchPost(_, { id }, { authUser }) {
-            return await DB.Post.findById(id);
+            if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
+            return await DB.Post.findOne(id);
         },
     },
     Mutation: {
-        // Add a new post
         async addPost(_, args, { authUser }) {
             if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
             const user = await DB.User.findOne({ where: { email: authUser.email } });
@@ -34,44 +34,36 @@ module.exports = {
             });
             return post
         },
-
-        // Update a particular post
-        async updatePost(_, { id, title, content, status, tags }, { authUser }) {
-            // Make sure user is logged in
+        async updatePost(_, { id, title, description }, { authUser }) {
             if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
+            const post = await DB.Post.findOne({ where: { id: id }, include: DB.User });
+            if (!post) throw new Error('¡La publicacion no existe!')
+            let { User } = post
+            if (User.toJSON().email !== authUser.email) throw new Error('¡Tus credenciales no pertenecen a esta publicacion!')
 
-            // fetch the post by it ID
-            const post = await DB.Post.findById(id);
+            let updatePost = {}
+            if (title) updatePost.title = title
+            if (description) updatePost.description = description
 
-            // Update the post
-            await post.update({
-                title,
-                slug: slugify(title, { lower: true }),
-                content,
-                status
-            });
-
-            // Assign tags to post
-            await post.setTags(tags);
+            await post.update(updatePost);
 
             return post;
         },
 
-        // Delete a specified post
         async deletePost(_, { id }, { authUser }) {
-            // Make sure user is logged in
             if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
-
-            // fetch the post by it ID
-            const post = await DB.Post.findById(id);
-
+            const post = await DB.Post.findOne({ where: { id: id }, include: DB.User });
+            if (!post) throw new Error('¡La publicacion no existe!')
+            let { User } = post
+            if (User.toJSON().email !== authUser.email) throw new Error('¡Tus credenciales no pertenecen a esta publicacion!')
             return await post.destroy();
         }
     },
     Post: {
-        user: ({ User }) => { 
+        user: ({ User }) => {
             let user = User.toJSON()
             user.photo = user.photo ? user.photo : '';
-            return user }
+            return user
+        }
     }
 }

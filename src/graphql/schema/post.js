@@ -26,10 +26,9 @@ module.exports = gql`
         id: Int!,
         title: String!,
         description: String
-        status: Boolean,
     ): Post!
     deletePost (
         id: Int!
-    ): Boolean
+    ): Post!
   }
 `
