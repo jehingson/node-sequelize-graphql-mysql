@@ -23,7 +23,6 @@ const server = new ApolloServer({
   typeDefs: schema,
   resolvers,
   context: async ({req}) => {
-    console.log(authUser);
     const authUser = await getUser(req);
     return {
       authUser
@@ -37,12 +36,10 @@ const getUser = async (req) => {
      try {
        return await jwt.verify(token, process.env.JWT_SECRET) 
      }catch(e){
-        throw new AuthenticationError('El usuario no esta autenticado');
+        throw new AuthenticationError('¡Debes iniciar sesión para continuar!');
      }
    }
 }
-
-
 
 
 server.applyMiddleware({ app, path: '/graphql' });
@@ -50,7 +47,6 @@ const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
 const port = process.env.PORT || 3000;
-
 httpServer.listen({ port }, () => {
-    console.log(`Apollo Server on http://localhost:${port}/graphql`);
+    console.log(`Apollo Server on ${process.env.URL}:${port}/graphql`);
 });

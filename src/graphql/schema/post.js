@@ -6,27 +6,28 @@ module.exports = gql`
     title: String!
     description: String!
     status: Boolean!
+    image: String!
     user: User!
     createdAt: DateTime! # will be generated
     updatedAt: DateTime! # will be generated
   }
   
   extend type Query {
-    allPost: [Post]
+    allPost: [Post!]!
     fetchPost(id: Int!): Post
   }
   extend type Mutation {
     addPost (
         title: String!,
         description: String!,
-        status: Boolean
-    ): Post
+        image: String!
+    ): Post!
     updatePost (
         id: Int!,
         title: String!,
         description: String
         status: Boolean,
-    ): Post
+    ): Post!
     deletePost (
         id: Int!
     ): Boolean

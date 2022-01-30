@@ -3,11 +3,12 @@ const { gql } = require('apollo-server-express');
 module.exports =  gql`
 scalar DateTime
   type User {
-   id: Int!
+   uid: Int!
    username: String!
    email: String!
    photo: String!
    posts: [Post]
+   token: String!
    password: String!
    createdAt: DateTime! # will be generated
    updatedAt: DateTime! # will be generated
@@ -21,17 +22,14 @@ scalar DateTime
     signIn (
         email: String!,
         password: String!
-    ): String
+    ): User!
     register(
         username: String!,
         email: String,
         password: String!,
     ): User!
     updateUser (
-        id: Int!,
-        firstName: String!,
-        lastName: String,
-        email: String!,
-        password: String!
-    ): User
+        username: String!,
+        photo: String,
+    ): User!
   }`
