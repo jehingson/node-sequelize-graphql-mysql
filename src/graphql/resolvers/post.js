@@ -4,14 +4,11 @@ require('dotenv').config();
 module.exports = {
     Query: {
         allPost: async (_, __, { authUser }) => {
-
-            console.log('user', authUser)
-            if(!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
+            if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
             const post = await DB.Post.findAll({
                 include: DB.User,
                 order: [['id', 'DESC']],
             });
-            console.log('eee', post)
             return post
         },
         async fetchPost(_, { id }, { authUser }) {
@@ -24,7 +21,7 @@ module.exports = {
             if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
             const user = await DB.User.findOne({ where: { email: authUser.email } });
             console.log('user', user)
-            if(!user){
+            if (!user) {
                 throw new Error('¡Debes iniciar sesión para continuar!')
             }
             let { title, description, image } = args
@@ -70,5 +67,11 @@ module.exports = {
 
             return await post.destroy();
         }
+    },
+    Post: {
+        user: ({ User }) => { 
+            let user = User.toJSON()
+            user.photo = user.photo ? user.photo : '';
+            return user }
     }
 }

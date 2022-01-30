@@ -11,9 +11,10 @@ require('dotenv').config();
 module.exports = {
     Query: {
         async allUsers() {
-            return await DB.User.findAll({});
+            return await DB.User.findAll();
         },
         async fetchUser(_, { id }, { authUser }) {
+            if(!authUser) throw new Error('Usuario o contraseña incorrecto')
             return await DB.User.findById(id);
         },
     },

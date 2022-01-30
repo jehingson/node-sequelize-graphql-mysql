@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon  src/index.js --exec babel-node",
+    "dev": "cross-env NODE_ENV=development nodemon  src/server.js --exec babel-node",
     "sequelize:create-migration": "cd src && npx sequelize migration:create",
     "sequelize:migrate": "cd src && npx sequelize-cli db:migrate"
   },
