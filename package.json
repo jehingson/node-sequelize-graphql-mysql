@@ -1,0 +1,46 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon  src/index.js --exec babel-node",
+    "sequelize:create-migration": "cd src && npx sequelize migration:create",
+    "sequelize:migrate": "cd src && npx sequelize-cli db:migrate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "apollo-server": "^2.2.3",
+    "apollo-server-express": "^2.2.3",
+    "bcrypt": "^3.0.8",
+    "body-parser": "^1.18.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dataloader": "^1.4.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "express-jwt": "^5.3.0",
+    "graphql": "^14.0.2",
+    "graphql-iso-date": "^3.6.1",
+    "graphql-resolvers": "^0.3.2",
+    "graphql-tools": "^2.3.0",
+    "jsonwebtoken": "^8.4.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.6.5",
+    "sequelize-cli": "^6.4.1",
+    "uuid": "^3.3.2",
+    "validator": "^10.9.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.8",
+    "@babel/preset-env": "^7.9.11",
+    "axios": "^0.18.0",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.15"
+  }
+}
