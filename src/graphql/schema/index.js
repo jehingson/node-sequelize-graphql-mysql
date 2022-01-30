@@ -1,22 +1,18 @@
-import { gql } from 'apollo-server-express'
-import postsSchema from '../resolvers/posts'
-import usersSchema from './users'
+const {gql} = require('apollo-server-express');
 
-const baseSchema = gql`
+const User = require('./user');
+const Post = require('./post');
+
+const baseSchema =  gql`
 scalar Date
-
 type Query {
-    _:Boolean
+  _: Boolean
 }
 type Mutation {
-    _:Boolean
+  _: Boolean
 }
 type Subscription {
-    _:Boolean
+  _: Boolean
 }
-
-`
-
-
-
-export default [baseSchema, usersSchema, postsSchema]
+`;
+module.exports =  [baseSchema, User, Post]

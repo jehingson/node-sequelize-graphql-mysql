@@ -1,38 +1,56 @@
-import { sequelize } from './models/index'
+require('dotenv/config');
+import cors  from 'cors'
+import http  from 'http'
+import jwt  from 'jsonwebtoken'
+import express  from 'express'
+import {
+  ApolloServer,
+  AuthenticationError
+}  from 'apollo-server-express'
+import DB  from './models/index.js'
+import schema  from './graphql/schema'
+import resolvers  from './graphql/resolvers'
 
-require('dotenv').config()
+const app = express();
 
-import cors from 'cors'
-import http from 'http'
-import jwt from 'jsonwebtoken' 
-import typeDefs from './graphql/schema'
-import resolvers from './graphql/resolvers'
-import { ApolloServer } from 'apollo-server-express'
-import express from 'express'
-import DB from './models/index.js'
+app.use(cors());
+DB.sequelize.sync({
+  force: process.env.SSLON === 'true' ? true : false
+});
 
-const app = express()
-app.use(cors())
-
-const server = new ApolloServer({ 
-  instrospection: true,
-  typeDefs, 
+const server = new ApolloServer({
+  introspection: true,
+  typeDefs: schema,
   resolvers,
-  context: async ({req, connection}) => {
-    authUser: req.user
+  context: async ({req}) => {
+    console.log(authUser);
+    const authUser = await getUser(req);
+    return {
+      authUser
+    }
   }
 });
-server.applyMiddleware({ app, path: '/graphql' })
-const httpServer = http.createServer(app)
+
+const getUser = async (req) => {
+   const token = req.headers['x-token'];
+   if(token){
+     try {
+       return await jwt.verify(token, process.env.JWT_SECRET) 
+     }catch(e){
+        throw new AuthenticationError('El usuario no esta autenticado');
+     }
+   }
+}
 
 
-DB.sequelize.sync({
-  force: process.env.SSLON === 'false' ? false : true
-})
 
 
-const PORT = process.env.PORT || 4500;
+server.applyMiddleware({ app, path: '/graphql' });
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: PORT }, () => {
-  console.log(`Server ready at ${process.env.URL}:${process.env.PORT}${server.graphqlPath}`)
+const port = process.env.PORT || 3000;
+
+httpServer.listen({ port }, () => {
+    console.log(`Apollo Server on http://localhost:${port}/graphql`);
 });

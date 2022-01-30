@@ -1,13 +1,10 @@
-import { GraphQLDateTime } from 'graphql-iso-date'
+const {GraphQLDateTime} = require('graphql-iso-date');
+const userResolver = require('./user');
+//const postResolver = require('./post');
 
 const customScalarResolver = {
     Date: GraphQLDateTime,
-}
-
-import userResolver from './users'
-import postResolver from './posts'
+  };
 
 
-
-
-export default [customScalarResolver, userResolver, postResolver]
+module.exports = [customScalarResolver, userResolver ]

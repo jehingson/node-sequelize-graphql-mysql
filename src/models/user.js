@@ -18,9 +18,14 @@ module.exports = (sequelize, DataTypes) => {
     photo: {
       type: DataTypes.STRING,
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: true
     }
   });
 
