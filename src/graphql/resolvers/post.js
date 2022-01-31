@@ -4,7 +4,7 @@ require('dotenv').config();
 module.exports = {
     Query: {
         allPost: async (_, __, { authUser }) => {
-           // if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
+           if (!authUser) throw new Error('¡Debes iniciar sesión para continuar!')
             const post = await DB.Post.findAll({
                 include: DB.User,
                 order: [['id', 'DESC']],

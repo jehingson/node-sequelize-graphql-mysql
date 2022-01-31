@@ -33,7 +33,7 @@ module.exports = {
                 email: user.email
             }, process.env.JWT_SECRET, { expiresIn: '24h' })
             return {
-                ...user,
+                uid: user.dataValues.uid,
                 token
 
             }
