@@ -29,11 +29,13 @@ module.exports = {
                 throw new Error('Usuario o contraseña incorrecto')
             }
             const token = jwt.sign({
-                id: user.id,
+                uid: user.uid,
                 email: user.email
             }, process.env.JWT_SECRET, { expiresIn: '24h' })
             return {
+                ...user,
                 token
+
             }
         },
         register: async (_, args) => {
