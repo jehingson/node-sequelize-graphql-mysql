@@ -10,10 +10,12 @@ import {
 import DB  from './models/index.js'
 import schema  from './graphql/schema'
 import resolvers  from './graphql/resolvers'
+import { graphqlUploadExpress } from 'graphql-upload';
+const cookieParser = require('cookie-parser')
 
 const app = express();
+app.use(cookieParser())
 
-app.use(cors());
 DB.sequelize.sync({
   force: process.env.SSLON === 'true' ? true : false
 });
@@ -30,6 +32,7 @@ const server = new ApolloServer({
   }
 });
 
+app.use(express.urlencoded({extended: false}))
 const getUser = async (req) => {
    const token = req.headers['x-token'];
    if(token){
@@ -41,10 +44,13 @@ const getUser = async (req) => {
    }
 }
 
-
 server.applyMiddleware({ app, path: '/graphql' });
 const httpServer = http.createServer(app);
 server.installSubscriptionHandlers(httpServer);
+
+app.use(express.static('public'))
+app.use(cors());
+app.use(graphqlUploadExpress());
 
 const port = process.env.PORT || 3000;
 httpServer.listen({ port }, () => {

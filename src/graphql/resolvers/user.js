@@ -32,8 +32,11 @@ module.exports = {
                 uid: user.uid,
                 email: user.email
             }, process.env.JWT_SECRET, { expiresIn: '24h' })
+
+            const result = user.toJSON()
+            result.photo = result.photo ? result.photo : ''
             return {
-                uid: user.dataValues.uid,
+                ...result,
                 token
 
             }

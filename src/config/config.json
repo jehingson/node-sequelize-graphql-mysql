@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
-    "database": "hydro",
-    "host": "127.0.0.1",
+    "username": "u6tzupfsbcmkxh9x",
+    "password": "x2wNbgS9EZJmY0gKYRKU",
+    "database": "bxf9ap8d2r7tvtvgavpo",
+    "host": "bxf9ap8d2r7tvtvgavpo-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   },
   "test": {
