@@ -1,9 +1,11 @@
+require('dotenv/config');
+
 module.exports = {
     "development": {
-        "username": "u6tzupfsbcmkxh9x",
-        "password": "x2wNbgS9EZJmY0gKYRKU",
-        "database": "bxf9ap8d2r7tvtvgavpo",
-        "host": "bxf9ap8d2r7tvtvgavpo-mysql.services.clever-cloud.com",
+        "username": process.env.DB_USERNAME,
+        "password": process.env.DB_PASSWORD,
+        "database": process.env.DB_NAME,
+        "host": process.env.DB_HOSTNAME,
         "dialect": "mysql"
       },
       "test": {
