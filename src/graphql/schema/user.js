@@ -13,10 +13,9 @@ scalar DateTime
    createdAt: DateTime! # will be generated
    updatedAt: DateTime! # will be generated
   }
-  
   extend type Query {
     allUsers: [User]
-    fetchUser(id: Int!): User
+    fetchUser: User!
   }
   extend type Mutation {
     signIn (

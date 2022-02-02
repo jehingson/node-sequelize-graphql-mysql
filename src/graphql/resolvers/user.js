@@ -13,9 +13,10 @@ module.exports = {
         async allUsers() {
             return await DB.User.findAll();
         },
-        async fetchUser(_, { id }, { authUser }) {
-            if(!authUser) throw new Error('Usuario o contraseña incorrecto')
-            return await DB.User.findById(id);
+        async fetchUser(_, __, { authUser }) {
+            if (!authUser) throw new Error('Error de autenticacion')
+            const user = await DB.User.findOne({where: {uid: authUser.uid}});
+            return user
         },
     },
     Mutation: {

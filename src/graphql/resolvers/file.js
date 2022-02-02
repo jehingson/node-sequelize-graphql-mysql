@@ -16,7 +16,7 @@ function makeid(length) {
 
 module.exports = {
     Query: {
-        hello: () => 'Hello world',
+        hello: () => 'Hello world'
     },
     Mutation: {
         uploadFile: async (parent, { file }) => {

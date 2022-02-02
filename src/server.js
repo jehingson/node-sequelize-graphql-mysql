@@ -33,6 +33,7 @@ const server = new ApolloServer({
 });
 
 app.use(express.urlencoded({extended: false}))
+
 const getUser = async (req) => {
    const token = req.headers['x-token'];
    if(token){
